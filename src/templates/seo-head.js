@@ -5,7 +5,8 @@ import {
   LOCALE_ISO_KEY,
   MODULE_NAME,
   STRATEGIES,
-  strategy
+  strategy,
+  onlyOnRoot
 } from './options'
 
 export const nuxtI18nSeo = function () {
@@ -77,7 +78,7 @@ function addHreflangLinks (locales, baseUrl, link) {
 }
 
 function addCanonicalLinks (currentLocale, baseUrl, link) {
-  if (strategy !== STRATEGIES.PREFIX_AND_DEFAULT) {
+  if (strategy !== STRATEGIES.PREFIX_AND_DEFAULT && (!onlyOnRoot && strategy !== STRATEGIES.PREFIX)) {
     return
   }
 
