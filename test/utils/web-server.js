@@ -38,7 +38,6 @@ export class StaticServer {
     const serverPath = resolve(__dirname, 'http-server-internal.js')
     const args = [
       `node -r esm ${serverPath}`,
-      '--',
       this.path,
       `--port ${this.port}`
     ]
