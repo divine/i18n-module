@@ -446,20 +446,17 @@ for (const trailingSlash of TRAILING_SLASHES) {
         link = dom.querySelector('#post-link')
       }
 
-      // TODO: Broken in Nuxt +2.14.0
-      if (trailingSlash !== false) {
-        test('/posts contains EN text, link to /fr/articles/ & link to /posts/my-post', async () => {
-          html = await getRespectingTrailingSlash('/posts')
-          getElements()
-          expect(title?.textContent).toBe('Posts')
-          expect(langSwitcherLink?.href).toBe('/fr/articles/')
-          // if (trailingSlash === false) {
-          //   expect(link).toBeNull()
-          // } else {
+      test('/posts contains EN text, link to /fr/articles/ & link to /posts/my-post', async () => {
+        html = await getRespectingTrailingSlash('/posts')
+        getElements()
+        expect(title?.textContent).toBe('Posts')
+        expect(langSwitcherLink?.href).toBe('/fr/articles/')
+        if (trailingSlash === false) {
+          expect(link).toBeNull()
+        } else {
           expect(link?.href).toBe(pathRespectingTrailingSlash('/posts/my-post'))
-          // }
-        })
-      }
+        }
+      })
 
       test('/posts/my-post contains EN text, link to /fr/articles/mon-article & link to /posts/', async () => {
         html = await getRespectingTrailingSlash('/posts/my-post')
@@ -469,28 +466,25 @@ for (const trailingSlash of TRAILING_SLASHES) {
         expect(link?.href).toBe('/posts/')
       })
 
-      // TODO: Broken in Nuxt +2.14.0
-      if (trailingSlash !== false) {
-        test('/fr/articles contains FR text, link to /posts/ & link to /fr/articles/mon-article', async () => {
-          html = await getRespectingTrailingSlash('/fr/articles')
-          getElements()
-          expect(title?.textContent).toBe('Articles')
-          expect(langSwitcherLink?.href).toBe('/posts/')
-          // if (trailingSlash === false) {
-          //   expect(link).toBeNull()
-          // } else {
+      test('/fr/articles contains FR text, link to /posts/ & link to /fr/articles/mon-article', async () => {
+        html = await getRespectingTrailingSlash('/fr/articles')
+        getElements()
+        expect(title?.textContent).toBe('Articles')
+        expect(langSwitcherLink?.href).toBe('/posts/')
+        if (trailingSlash === false) {
+          expect(link).toBeNull()
+        } else {
           expect(link?.href).toBe(pathRespectingTrailingSlash('/fr/articles/mon-article'))
-          // }
-        })
+        }
+      })
 
-        test('/fr/articles/mon-article contains FR text, link to /posts/my-post & link to /fr/articles/', async () => {
-          html = await getRespectingTrailingSlash('/fr/articles/mon-article')
-          getElements()
-          expect(title?.textContent).toBe('Articles')
-          expect(langSwitcherLink?.href).toBe(pathRespectingTrailingSlash('/posts/my-post'))
-          expect(link?.href).toBe('/fr/articles/')
-        })
-      }
+      test('/fr/articles/mon-article contains FR text, link to /posts/my-post & link to /fr/articles/', async () => {
+        html = await getRespectingTrailingSlash('/fr/articles/mon-article')
+        getElements()
+        expect(title?.textContent).toBe('Articles')
+        expect(langSwitcherLink?.href).toBe(pathRespectingTrailingSlash('/posts/my-post'))
+        expect(link?.href).toBe('/fr/articles/')
+      })
     })
 
     describe('store', () => {
@@ -511,21 +505,18 @@ for (const trailingSlash of TRAILING_SLASHES) {
       })
     })
 
-    // TODO: Broken in Nuxt +2.14.0
-    if (trailingSlash !== false) {
-      test('navigates to child route with nameless parent and checks path to other locale', async () => {
-        const window = await nuxt.renderAndGetWindow(url(pathRespectingTrailingSlash('/posts')))
+    test('navigates to child route with nameless parent and checks path to other locale', async () => {
+      const window = await nuxt.renderAndGetWindow(url(pathRespectingTrailingSlash('/posts')))
 
-        const langSwitcherLink = window.document.querySelector('#lang-switcher a')
-        expect(langSwitcherLink.getAttribute('href')).toBe('/fr/articles/')
-        const link = window.document.querySelector('#post-link')
-        // if (trailingSlash === false) {
-        //   expect(link).toBeNull()
-        // } else {
+      const langSwitcherLink = window.document.querySelector('#lang-switcher a')
+      const link = window.document.querySelector('#post-link')
+      expect(langSwitcherLink.getAttribute('href')).toBe('/fr/articles/')
+      if (trailingSlash === false) {
+        expect(link).toBeNull()
+      } else {
         expect(link.getAttribute('href')).toBe(pathRespectingTrailingSlash('/posts/my-post'))
-      // }
-      })
-    }
+      }
+    })
 
     test('localePath with route-less params navigates to same locale route', async () => {
       const window = await nuxt.renderAndGetWindow(url(pathRespectingTrailingSlash('/posts/my-post')))
