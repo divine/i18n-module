@@ -19,9 +19,11 @@ export default defineNuxtConfig({
   plugins: [`../plugins/i18nHooks.ts`],
   i18n: {
     restructureDir: false,
+    baseUrl: 'http://localhost:3000',
     vueI18n: './config/i18n.config.ts',
     defaultLocale: 'en',
     experimental: {
+      alternateLinkCanonicalQueries: false,
       autoImportTranslationFunctions: true,
       localeDetector: './localeDetector.ts'
     },

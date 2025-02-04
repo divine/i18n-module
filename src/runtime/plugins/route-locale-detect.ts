@@ -1,5 +1,5 @@
 import { unref } from 'vue'
-import { hasPages, isSSG } from '#build/i18n.options.mjs'
+import { hasPages } from '#build/i18n.options.mjs'
 import { addRouteMiddleware, defineNuxtPlugin, defineNuxtRouteMiddleware } from '#imports'
 import { createLogger } from 'virtual:nuxt-i18n-logger'
 import { detectLocale, detectRedirect, loadAndSetLocale, navigate } from '../utils'
@@ -33,14 +33,14 @@ export default defineNuxtPlugin({
       return detected
     }
 
-    // router is enabled and project has pages
+    await handleRouteDetect(currentRoute.value)
+
+    // app has no pages - do not register route middleware
     if (!hasPages) {
-      await handleRouteDetect(currentRoute.value)
       return
     }
 
     const localeChangeMiddleware = defineNuxtRouteMiddleware(async (to, from) => {
-      if (isSSG && nuxtApp._vueI18n.__firstAccess) return
       __DEBUG__ && logger.log('locale-changing middleware', to, from)
 
       const locale = await nuxtApp.runWithContext(() => handleRouteDetect(to))

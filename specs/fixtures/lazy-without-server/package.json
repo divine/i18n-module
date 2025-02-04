@@ -1,11 +1,12 @@
 {
-  "name": "nuxt3-test-issues-2226",
+  "name": "nuxt3-test-lazy",
   "private": true,
+  "type": "module",
   "scripts": {
+    "dev": "nuxi dev",
     "build": "nuxt build",
-    "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview"
+    "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
     "@nuxtjs/i18n": "latest",

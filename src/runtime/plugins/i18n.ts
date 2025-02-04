@@ -66,6 +66,12 @@ export default defineNuxtPlugin({
 
     const vueI18nOptions: I18nOptions = await loadVueI18nOptions(vueI18nConfigs, useNuxtApp())
     vueI18nOptions.messages = vueI18nOptions.messages || {}
+
+    // initialize locale objects to make vue-i18n aware of available locales
+    for (const l of localeCodes) {
+      vueI18nOptions.messages[l] ??= {}
+    }
+
     vueI18nOptions.fallbackLocale = vueI18nOptions.fallbackLocale ?? false
     if (defaultLocaleDomain) {
       vueI18nOptions.locale = defaultLocaleDomain
@@ -169,12 +175,13 @@ export default defineNuxtPlugin({
         }
       },
       extendComposerInstance(instance, c) {
+        // Set the extended properties on local scope composer instance
         const props: [keyof Composer, PropertyDescriptor['get']][] = [
-          ['locales', () => c.locales.value],
-          ['localeCodes', () => c.localeCodes.value],
-          ['baseUrl', () => c.baseUrl.value],
+          ['locales', () => c.locales],
+          ['localeCodes', () => c.localeCodes],
+          ['baseUrl', () => c.baseUrl],
           ['strategy', () => c.strategy],
-          ['localeProperties', () => c.localeProperties.value],
+          ['localeProperties', () => c.localeProperties],
           ['setLocale', () => async (locale: string) => Reflect.apply(c.setLocale, c, [locale])],
           ['loadLocaleMessages', () => async (locale: string) => Reflect.apply(c.loadLocaleMessages, c, [locale])],
           ['differentDomains', () => c.differentDomains],

@@ -75,12 +75,15 @@ test('can not access to disable route path', async () => {
   expect(await page.locator('#link-ignore-disable').getAttribute('href')).toBe(null)
 
   // disable direct url access
-  let res: Response | (Error & { status: () => number }) | null = null
+  let res: Awaited<ReturnType<typeof page.goto>> | (Error & { status: () => number }) | null = null
   try {
-    res = await page.goto(url('/fr/ignore-routes/disable'))
+    // attempting to goto /fr/disable instead of /fr/ignore-routes/disable since
+    // that route has a catch all that would succeed
+    res = await page.goto(url('/fr/disable'))
   } catch (error: unknown) {
     res = error as Error & { status: () => number }
   }
+
   // 404
   expect(res!.status()).toBe(404) // eslint-disable-line @typescript-eslint/no-non-null-assertion
 })
